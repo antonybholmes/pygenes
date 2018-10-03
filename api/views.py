@@ -16,9 +16,6 @@ import libgenomic
 def _gene_to_json(gene):
     return {'loc':gene.loc, 'strand':gene.strand, 'type':gene.level, 'ids':gene.annotations, 'tags':gene.tags}
 
-def _add_children_json(gene, level, json):
-    json[level] = _genes_to_json(gene.children(level))
-
 def _genes_to_json(genes):
     ret = []
     
@@ -26,9 +23,9 @@ def _genes_to_json(genes):
         json = _gene_to_json(gene)
         
         if gene.level == libgenomic.GENE:
-            _add_children_json(gene, libgenomic.TRANSCRIPT, json)
+            json['transcripts'] = _genes_to_json(gene.children(libgenomic.TRANSCRIPT))
         elif gene.level == libgenomic.TRANSCRIPT:
-            _add_children_json(gene, libgenomic.EXON, json)
+            json['exons'] = _genes_to_json(gene.children(libgenomic.EXON))
         else:
             pass
         
