@@ -10,12 +10,29 @@ sys.path.append('/ifs/scratch/cancer/Lab_RDF/abh2138/scripts/python/lib/libhttp/
 import libhttp
 sys.path.append('/ifs/scratch/cancer/Lab_RDF/abh2138/scripts/python/lib/libgfb/libgfb')
 import libgfb
+sys.path.append('/ifs/scratch/cancer/Lab_RDF/abh2138/scripts/python/lib/libgenomic/libgenomic')
+import libgenomic
+
+def _gene_to_json(gene):
+    return {'loc':gene.loc, 'strand':gene.strand, 'type':gene.level, 'ids':gene.annotations, 'tags':gene.tags}
+
+def _add_children_json(gene, level, json):
+    json[level] = _genes_to_json(gene.children(level))
 
 def _genes_to_json(genes):
     ret = []
     
     for gene in genes:
-        ret.append({'loc':gene.loc, 'strand':gene.strand, 'type':gene.level, 'ids':gene.annotations, 'tags':gene.tags})
+        json = _gene_to_json(gene)
+        
+        if gene.level == libgenomic.GENE:
+            _add_children_json(gene, libgenomic.TRANSCRIPT, json)
+        elif gene.level == libgenomic.TRANSCRIPT:
+            _add_children_json(gene, libgenomic.EXON, json)
+        else:
+            pass
+        
+        ret.append(json)
     
     return ret
 
