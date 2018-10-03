@@ -72,3 +72,26 @@ def search(request):
     gl = _genes_to_json(genes)
     
     return JsonResponse(gl, safe=False)
+
+
+def databases(request):
+    files = os.listdir(settings.DATA_DIR)
+    
+    ret = []
+    
+    for file in files:
+        d = os.path.join(settings.DATA_DIR, file)
+        if os.path.isdir(d):
+            db = file
+            
+            files2 = os.listdir(d)
+            
+            for file2 in files2:
+                d2 = os.path.join(d, file2)
+                
+                if os.path.isdir(d2):
+                    genome = file2
+                    
+                    ret.append({'db':db, 'genome':genome})
+    
+    return JsonResponse(ret, safe=False)
