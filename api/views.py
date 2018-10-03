@@ -70,7 +70,10 @@ def find(request):
 
 
 def search(request):
-    # Defaults should find BCL6
+    """
+    Search for genes by name.
+    """
+    
     id_map = libhttp.parse_params(request, {'db':'gencode', 'g':'grch38', 's':'BCL6', 't':'g'})
     
     db = id_map['db'][0]
@@ -89,6 +92,10 @@ def search(request):
 
 
 def databases(request):
+    """
+    List available databases.
+    """
+    
     files = os.listdir(settings.DATA_DIR)
     
     ret = []
