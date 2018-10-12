@@ -58,7 +58,7 @@ def find(request):
     
     gl = _genes_to_json(genes)
     
-    return JsonResponse({'loc':loc, 'genes':gl}, safe=False)
+    return JsonResponse({'loc':loc.__str__(), 'genes':gl}, safe=False)
 
 
 def search(request):
