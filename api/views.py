@@ -6,11 +6,9 @@ import os
 from genes import settings
 
 import sys
-sys.path.append('/ifs/scratch/cancer/Lab_RDF/abh2138/scripts/python/lib/libhttp/libhttp')
 import libhttp
-sys.path.append('/ifs/scratch/cancer/Lab_RDF/abh2138/scripts/python/lib/libgfb/libgfb')
+import libhttpdna
 import libgfb
-sys.path.append('/ifs/scratch/cancer/Lab_RDF/abh2138/scripts/python/lib/libgenomic/libgenomic')
 import libgenomic
 
 def _gene_to_json(gene):
@@ -47,16 +45,10 @@ def find(request):
     db = id_map['db'][0]
     genome = id_map['g'][0]
     
-    chr = id_map['chr'][0]
-    start = id_map['s'][0]
-    end = id_map['e'][0]
+    loc = libhttpdna.get_loc_from_params(id_map)
     
-    if start > end:
-      start = start ^ end
-      end = start ^ end
-      start = start ^ end
-    
-    loc = '{}:{}-{}'.format(chr, start, end)
+    if loc is None:
+        return JsonResponse({}, safe=False)
     
     dir = os.path.join(settings.DATA_DIR, db, genome)
     
