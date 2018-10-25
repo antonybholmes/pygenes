@@ -114,7 +114,7 @@ def databases(request):
                         d3 = os.path.join(d2, file3)
                 
                         if os.path.isdir(d3):
-                            track = file2
+                            track = file3
                     
                             ret.append({'genome':genome.capitalize(), 'assembly':assembly, 'track':track})
     
