@@ -40,19 +40,19 @@ def find(request):
     """
     
     # Defaults should find BCL6
-    id_map = libhttp.parse_params(request, {'db':'gencode', 'g':'grch38', 'chr':'chr3', 's':187721377, 'e':187736497, 't':'g'})
+    id_map = libhttp.parse_params(request, {'track':'gencode', 'assembly':'grch38', 'chr':'chr3', 's':187721377, 'e':187736497, 't':'g'})
     
-    db = id_map['db'][0]
-    genome = id_map['g'][0]
+    track = id_map['track'][0]
+    assembly = id_map['assembly'][0]
     
     loc = libhttpdna.get_loc_from_params(id_map)
     
     if loc is None:
         return JsonResponse({}, safe=False)
     
-    dir = os.path.join(settings.DATA_DIR, db, genome)
+    dir = os.path.join(settings.DATA_DIR, track, assembly)
     
-    reader = libgfb.GFBReader(db, genome, dir)
+    reader = libgfb.GFBReader(track, assembly, dir)
     
     genes = reader.find_genes(loc)
     
@@ -66,15 +66,15 @@ def search(request):
     Search for genes by name.
     """
     
-    id_map = libhttp.parse_params(request, {'db':'gencode', 'g':'grch38', 's':'BCL6', 't':'g'})
+    id_map = libhttp.parse_params(request, {'track':'gencode', 'assembly':'grch38', 's':'BCL6', 't':'g'})
     
-    db = id_map['db'][0]
-    genome = id_map['g'][0]
+    track = id_map['track'][0]
+    assembly = id_map['assembly'][0]
     search = id_map['s'][0]
     
-    dir = os.path.join(settings.DATA_DIR, db, genome)
+    dir = os.path.join(settings.DATA_DIR, track, assembly)
     
-    reader = libgfb.GFBReader(db, genome, dir)
+    reader = libgfb.GFBReader(track, assembly, dir)
     
     genes = reader.get_genes(search)
     
@@ -94,8 +94,9 @@ def databases(request):
     
     for file in files:
         d = os.path.join(settings.DATA_DIR, file)
+        
         if os.path.isdir(d):
-            db = file
+            track = file
             
             files2 = os.listdir(d)
             
@@ -103,8 +104,8 @@ def databases(request):
                 d2 = os.path.join(d, file2)
                 
                 if os.path.isdir(d2):
-                    genome = file2
+                    assembly = file2
                     
-                    ret.append({'db':db, 'genome':genome})
+                    ret.append({'track':track, 'assembly':assembly})
     
     return JsonResponse(ret, safe=False)
