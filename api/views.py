@@ -51,6 +51,7 @@ def find(request):
     if loc is None:
         return JsonResponse({}, safe=False)
     
+
     dir = os.path.join(settings.DATA_DIR, genome, assembly, track)
     
     reader = libgfb.GFBReader(track, assembly, dir)
