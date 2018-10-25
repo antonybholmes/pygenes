@@ -40,7 +40,7 @@ def find(request):
     """
     
     # Defaults should find BCL6
-    id_map = libhttp.parse_params(request, {'track':'gencode', 'assembly':'grch38', 'chr':'chr3', 's':187721377, 'e':187736497, 't':'g'})
+    id_map = libhttp.parse_params(request, {'genome':'Human', 'track':'gencode', 'assembly':'grch38', 'chr':'chr3', 's':187721377, 'e':187736497, 't':'g'})
     
     track = id_map['track'][0]
     assembly = id_map['assembly'][0]
@@ -66,7 +66,7 @@ def search(request):
     Search for genes by name.
     """
     
-    id_map = libhttp.parse_params(request, {'track':'gencode', 'assembly':'grch38', 's':'BCL6', 't':'g'})
+    id_map = libhttp.parse_params(request, {'genome':'Human', 'track':'gencode', 'assembly':'grch38', 's':'BCL6', 't':'g'})
     
     track = id_map['track'][0]
     assembly = id_map['assembly'][0]
