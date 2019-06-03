@@ -101,6 +101,18 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': 'redis://52.20.36.165:6379/2',
+	'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+            'PASSWORD': '***REMOVED***',
+        }
+    }
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -115,10 +127,12 @@ USE_L10N = True
 USE_TZ = True
 
 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
 
-
 DATA_DIR = 'data'
+
+CACHE_TIME_S = 86400
