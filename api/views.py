@@ -57,6 +57,8 @@ def find(request):
     genome = id_map['genome'].lower()
     assembly = id_map['assembly'].lower()
     track = id_map['track'].lower()
+    s = id_map['s']
+    e = id_map['e']
     
     # try to stop users specifying wrong genome
     if 'mm' in assembly:
