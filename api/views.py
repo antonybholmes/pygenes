@@ -64,7 +64,7 @@ def find(request):
     if 'mm' in assembly:
         genome = 'mouse'
         
-    cache_key = '_'.join(['gene_search', genome, assembly, track, search, str(s), str(e)])
+    cache_key = '_'.join(['gene_search', genome, assembly, track, str(s), str(e)])
         
     data = cache.get(cache_key)
     
